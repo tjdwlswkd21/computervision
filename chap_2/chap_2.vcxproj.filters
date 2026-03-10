@@ -15,12 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="소스.cpp">
+    <ClCompile Include="print_my_face.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="README2-1.md">
+    <None Include="2-1_README.md">
+      <Filter>소스 파일</Filter>
+    </None>
+    <None Include="2-2_README.md">
       <Filter>소스 파일</Filter>
     </None>
   </ItemGroup>

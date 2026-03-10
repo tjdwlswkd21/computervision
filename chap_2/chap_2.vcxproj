@@ -128,10 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="소스.cpp" />
+    <ClCompile Include="print_my_face.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="README2-1.md" />
+    <None Include="2-2_README.md" />
+    <None Include="2-1_README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
