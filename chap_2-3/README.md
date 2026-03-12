@@ -42,7 +42,7 @@ int main() {
 }
 ```
 
-<video src="./3_pic.mp4" controls style="max-width: 100%;"></video>
+https://github.com/user-attachments/assets/eb19e4e1-2f1c-416e-89ff-28a7e6e6c293
 
 # 3. 0부터 9가 적혀있는 이미지를 순자적으로 1초마다 순회하다가 q를 입력받으면 중료하라
 
@@ -68,4 +68,4 @@ int main() {
 }
 ```
 
-<video src="./10_pic_loop.mp4" controls style="max-width: 100%;"></video>
+https://github.com/user-attachments/assets/eaf19c0a-1c7b-4e78-ab16-552e8d62b099
