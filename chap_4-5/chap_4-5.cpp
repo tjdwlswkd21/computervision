@@ -10,7 +10,7 @@ void on_change(int pos, void* userdata) {                               // 트랙�
             Scalar(0, 255, 0), 3);                                       // 초록색(BGR), 두께 3으로 그리기
 }                                                                        // 콜백 함수 종료
 int main() {                                                             // 메인 함수 선언
-    Mat img = imread("C:/Users/tjdwl/source/repos/"                     // 지정된 경로에서
+    Mat img = imread("C:/Users/tjdwl/source/repos/"                     // 지정된 경로에서d
         "computervision/chap_2-3/lenna.bmp");                           // lenna.bmp를 읽어 img에 저장
     if (img.empty()) return -1;                                          // 이미지 로드 실패 시 -1 반환(비정상종료)
     namedWindow("Lenna");                                                // "Lenna" 이름의 윈도우 생성
