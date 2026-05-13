@@ -1,124 +1,124 @@
-# 1. 코드 5-5에서 연산자 함수를 사용하지 않고 픽셀값을 직접 참조하는 방식으로 밝기를 2배 스케일링하는 프로그램을 작성하시오
+# 1. 코드 5-5에서 연산자 함수를 사용하지 말고 픽셀값을 직접 참조하는 방식으로 같은 결과를 얻도록 수정하라. (204페이지 코드 5-3을 참고할 것.)
 
 ``` cpp
 #include <opencv2/opencv.hpp>                                            // opencv 헤더파일 추가
 #include <iostream>                                                      // c++ 헤더파일 추가
-using namespace std;                                                     // std(c++) 네임스페이스 사용
-using namespace cv;                                                      // cv(opencv) 네임스페이스 사용
-int main() {
-    Mat src = imread("C:/Users/tjdwl/source/repos/"                     // 이미지 불러오기
+using namespace std;                                                     // std(c++) 네임스페이스 생략
+using namespace cv;                                                      // cv(opencv) 네임스페이스 생략
+int main() {                                                             // 메인 함수 선언
+    Mat src = imread("C:/Users/tjdwl/source/repos/"                     // 지정된 경로에서
         "computervision/chap_2-3/lenna.bmp", IMREAD_GRAYSCALE);         // lenna.bmp를 그레이스케일로 읽어 src에 저장
-    float s = 2.f;                                                       // 밝기 스케일 인수 설정(2배)
-    Mat dst = src.clone();                                               // src를 복사하여 dst에 저장
-    for (int i = 0; i < src.rows; i++) {                                // 행(세로) 방향으로 반복
-        for (int j = 0; j < src.cols; j++) {                           // 열(가로) 방향으로 반복
-            dst.at<uchar>(i, j) = saturate_cast<uchar>(src.at<uchar>(i, j) * s); // 픽셀값에 s를 곱하되 0~255 범위로 포화 처리
-        }                                                                // 열 반복문 끝
-    }                                                                    // 행 반복문 끝
-    imshow("src", src);                                                  // "src" 창에 원본 이미지 표시
-    imshow("dst", dst);                                                  // "dst" 창에 결과 이미지 표시
-    waitKey(0);                                                          // 키 입력 대기
+    float s = 2.f;                                                       // 픽셀값에 곱할 밝기 배율(2배) 선언
+    Mat dst = src.clone();                                               // src를 복사하여 결과 이미지 dst 생성
+    for (int i = 0; i < src.rows; i++) {                                // 이미지의 모든 행을 순회
+        for (int j = 0; j < src.cols; j++) {                            // 이미지의 모든 열을 순회
+            dst.at<uchar>(i, j) = saturate_cast<uchar>(                 // (i,j) 위치의 픽셀값에
+                src.at<uchar>(i, j) * s);                               // 배율 s를 곱한 뒤 0~255 범위로 포화 연산하여 저장
+        }                                                                // 내부 반복문 종료
+    }                                                                    // 외부 반복문 종료
+    imshow("src", src);                                                  // "src" 윈도우에 원본 이미지 출력
+    imshow("dst", dst);                                                  // "dst" 윈도우에 밝기 증가 이미지 출력
+    waitKey(0);                                                          // 키 입력이 있을 때까지 대기
     return 0;                                                            // 0을 반환(정상종료)
-}                                                                        // 메인함수 끝
+}                                                                        // 메인함수 종료
 ```
 
-![결과](./chap_5-2_1.png)
+![실행결과](./chap_5-2_1.png)
 
 
-# 2. 코드 5-6에서 연산자 함수를 사용하지 않고 픽셀값을 직접 참조하는 방식으로 명암비를 개선하는 프로그램을 작성하시오 (α=1.0)
+# 2. 코드 5-6에서 연산자 함수를 사용하지 말고 픽셀값을 직접 참조하는 방식으로 같은 결과를 얻도록 수정하라. (204페이지 코드 5-3을 참고할 것.)
 
 ``` cpp
 #include <opencv2/opencv.hpp>                                            // opencv 헤더파일 추가
 #include <iostream>                                                      // c++ 헤더파일 추가
-using namespace std;                                                     // std(c++) 네임스페이스 사용
-using namespace cv;                                                      // cv(opencv) 네임스페이스 사용
-int main() {
-    Mat src = imread("C:/Users/tjdwl/source/repos/"                     // 이미지 불러오기
+using namespace std;                                                     // std(c++) 네임스페이스 생략
+using namespace cv;                                                      // cv(opencv) 네임스페이스 생략
+int main() {                                                             // 메인 함수 선언
+    Mat src = imread("C:/Users/tjdwl/source/repos/"                     // 지정된 경로에서
         "computervision/chap_2-3/lenna.bmp", IMREAD_GRAYSCALE);         // lenna.bmp를 그레이스케일로 읽어 src에 저장
-    float alpha = 1.f;                                                   // 명암비 조절 인수 설정(1.0)
-    Mat dst = src.clone();                                               // src를 복사하여 dst에 저장
-    for (int i = 0; i < src.rows; i++) {                                // 행(세로) 방향으로 반복
-        for (int j = 0; j < src.cols; j++) {                           // 열(가로) 방향으로 반복
-            int srcval = src.at<uchar>(i, j);                          // 현재 픽셀값을 int로 읽기
-            float dstval = srcval + (srcval - 128) * alpha;             // 128 기준으로 명암비 조절값 계산
-            dst.at<uchar>(i, j) = saturate_cast<uchar>(dstval);        // 계산값을 0~255 범위로 포화 후 저장
-        }                                                                // 열 반복문 끝
-    }                                                                    // 행 반복문 끝
-    imshow("src", src);                                                  // "src" 창에 원본 이미지 표시
-    imshow("dst", dst);                                                  // "dst" 창에 결과 이미지 표시
-    waitKey(0);                                                          // 키 입력 대기
+    float alpha = 1.f;                                                   // 명암비 조절 강도(alpha) 선언 및 초기화
+    Mat dst = src.clone();                                               // src를 복사하여 결과 이미지 dst 생성
+    for (int i = 0; i < src.rows; i++) {                                // 이미지의 모든 행을 순회
+        for (int j = 0; j < src.cols; j++) {                            // 이미지의 모든 열을 순회
+            int srcval = src.at<uchar>(i, j);                           // (i,j) 위치의 원본 픽셀값을 int로 저장
+            float dstval = srcval + (srcval - 128) * alpha;             // 128 기준으로 픽셀값을 alpha 배율로 명암비 조절
+            dst.at<uchar>(i, j) = saturate_cast<uchar>(dstval);        // 계산 결과를 0~255 범위로 포화 연산하여 dst에 저장
+        }                                                                // 내부 반복문 종료
+    }                                                                    // 외부 반복문 종료
+    imshow("src", src);                                                  // "src" 윈도우에 원본 이미지 출력
+    imshow("dst", dst);                                                  // "dst" 윈도우에 명암비 조절 이미지 출력
+    waitKey(0);                                                          // 키 입력이 있을 때까지 대기
     return 0;                                                            // 0을 반환(정상종료)
-}                                                                        // 메인함수 끝
+}                                                                        // 메인함수 종료
 ```
 
-![결과](./chap_5-2_2.png)
+![실행결과](./chap_5-2_2.png)
 
 
-# 3. α가 너무 크거나 너무 작을 때 명암비 조절 결과를 비교하고 이유를 설명하시오 (α=2.0 vs α=0.5)
+# 3. 코드5-6에서 α가 너무 크면 어떻게 되는가? 실행결과를 첨부하고 이유를 설명하라. / 코드5-6에서 α가 너무 작으면 어떻게 되는가? 실행결과를 첨부하고 이유를 설명하라.
 
 ``` cpp
 #include <opencv2/opencv.hpp>                                            // opencv 헤더파일 추가
 #include <iostream>                                                      // c++ 헤더파일 추가
-using namespace std;                                                     // std(c++) 네임스페이스 사용
-using namespace cv;                                                      // cv(opencv) 네임스페이스 사용
-int main() {
-    Mat src = imread("C:/Users/tjdwl/source/repos/"                     // 이미지 불러오기
+using namespace std;                                                     // std(c++) 네임스페이스 생략
+using namespace cv;                                                      // cv(opencv) 네임스페이스 생략
+int main() {                                                             // 메인 함수 선언
+    Mat src = imread("C:/Users/tjdwl/source/repos/"                     // 지정된 경로에서
         "computervision/chap_2-3/lenna.bmp", IMREAD_GRAYSCALE);         // lenna.bmp를 그레이스케일로 읽어 src에 저장
-    float alpha1 = 0.5f;                                                 // 명암비 인수 소값(0.5) 설정
-    float alpha2 = 2.f;                                                  // 명암비 인수 대값(2.0) 설정
-    Mat dst1 = src.clone();                                              // src를 복사하여 dst1에 저장
-    Mat dst2 = src.clone();                                              // src를 복사하여 dst2에 저장
-    for (int i = 0; i < src.rows; i++) {                                // 행(세로) 방향으로 반복
-        for (int j = 0; j < src.cols; j++) {                           // 열(가로) 방향으로 반복
-            int srcval = src.at<uchar>(i, j);                          // 현재 픽셀값을 int로 읽기
-            float dstval1 = srcval + (srcval - 128) * alpha1;           // alpha1로 명암비 조절값 계산(완화)
-            float dstval2 = srcval + (srcval - 128) * alpha2;           // alpha2로 명암비 조절값 계산(강화)
-            dst1.at<uchar>(i, j) = saturate_cast<uchar>(dstval1);      // 계산값을 0~255 범위로 포화 후 dst1에 저장
-            dst2.at<uchar>(i, j) = saturate_cast<uchar>(dstval2);      // 계산값을 0~255 범위로 포화 후 dst2에 저장
-        }                                                                // 열 반복문 끝
-    }                                                                    // 행 반복문 끝
-    imshow("src", src);                                                  // "src" 창에 원본 이미지 표시
-    imshow("dst1", dst1);                                                // "dst1" 창에 alpha=0.5 결과 표시
-    imshow("dst2", dst2);                                                // "dst2" 창에 alpha=2.0 결과 표시
-    waitKey(0);                                                          // 키 입력 대기
+    float alpha1 = 0.5f;                                                 // 낮은 명암비 강도(0.5배) 선언
+    float alpha2 = 2.f;                                                  // 높은 명암비 강도(2배) 선언
+    Mat dst1 = src.clone();                                              // src를 복사하여 낮은 명암비 결과 이미지 dst1 생성
+    Mat dst2 = src.clone();                                              // src를 복사하여 높은 명암비 결과 이미지 dst2 생성
+    for (int i = 0; i < src.rows; i++) {                                // 이미지의 모든 행을 순회
+        for (int j = 0; j < src.cols; j++) {                            // 이미지의 모든 열을 순회
+            int srcval = src.at<uchar>(i, j);                           // (i,j) 위치의 원본 픽셀값을 int로 저장
+            float dstval1 = srcval + (srcval - 128) * alpha1;           // alpha1(0.5)로 명암비를 낮게 조절한 픽셀값 계산
+            float dstval2 = srcval + (srcval - 128) * alpha2;           // alpha2(2.0)로 명암비를 높게 조절한 픽셀값 계산
+            dst1.at<uchar>(i, j) = saturate_cast<uchar>(dstval1);      // dstval1을 0~255 포화 연산하여 dst1에 저장
+            dst2.at<uchar>(i, j) = saturate_cast<uchar>(dstval2);      // dstval2를 0~255 포화 연산하여 dst2에 저장
+        }                                                                // 내부 반복문 종료
+    }                                                                    // 외부 반복문 종료
+    imshow("src", src);                                                  // "src" 윈도우에 원본 이미지 출력
+    imshow("dst1", dst1);                                                // "dst1" 윈도우에 낮은 명암비 이미지 출력
+    imshow("dst2", dst2);                                                // "dst2" 윈도우에 높은 명암비 이미지 출력
+    waitKey(0);                                                          // 키 입력이 있을 때까지 대기
     return 0;                                                            // 0을 반환(정상종료)
-}                                                                        // 메인함수 끝
+}                                                                        // 메인함수 종료
 ```
 
-α가 너무 큰 경우(α=2.0): 128보다 밝은 픽셀은 급격히 밝아져 255에 포화되고, 128보다 어두운 픽셀은 급격히 어두워져 0에 포화된다. 결과적으로 중간 톤이 사라지면서 명암 경계가 극단적으로 나뉘어 이미지가 거칠고 디테일이 손실된다.
+알파가 너무 큰 경우에는 평균 밝기를 기준으로 픽셀들이 양극단으로 강하게 밀려나면서 명암비가 극도로 높아지는데, 이로 인해 밝은 영역은 순백색(255)으로, 어두운 영역은 순검정색(0)으로 포화되는 클리핑 현상이 발생하여 영상의 세부적인 질감이나 정보가 손실되고 이미지가 매우 거칠게 표현된다.
+또한 알파가 너무 작은 경우(0에 가깝거나 음수인 경우)에는 픽셀 간의 밝기 차이가 줄어들면서 모든 픽셀값이 영상의 평균값 근처로 수렴하게 되는데, 이로 인해 밝고 어두운 경계가 모호해지는 저대비 현상이 나타나며 알파가 -1에 가까워질수록 영상은 아무런 형체를 알아볼 수 없는 평탄한 회색조 이미지로 변하게 된다.
 
-α가 너무 작은 경우(α=0.5): 128 기준의 편차가 절반으로 줄어들어 모든 픽셀이 128에 가까워진다. 밝고 어두운 영역의 차이가 줄어들면서 이미지 전체가 회색에 가깝게 평탄해져 대비가 낮아진다.
-
-![결과](./chap_5-2_3.png)
+![실행결과](./chap_5-2_3.png)
 
 
-# 4. 코드 5-6에서 기준값 128을 입력 영상 픽셀값의 평균으로 변경하여 명암비를 개선하는 프로그램을 작성하시오
+# 4. 코드5-6은 입력 영상의 픽셀값을 128을 기준으로 구분하여 명암비를 개선한다. 여기서 128을 입력영상 픽셀값의 평균값으로 변경하여 명암비 개선을 수행하라. (영상의 픽셀값의 평균값을 구할때는 함수 mean()을 이용하라.)
 
 ``` cpp
 #include <opencv2/opencv.hpp>                                            // opencv 헤더파일 추가
 #include <iostream>                                                      // c++ 헤더파일 추가
-using namespace std;                                                     // std(c++) 네임스페이스 사용
-using namespace cv;                                                      // cv(opencv) 네임스페이스 사용
-int main() {
-    Mat src = imread("C:/Users/tjdwl/source/repos/"                     // 이미지 불러오기
+using namespace std;                                                     // std(c++) 네임스페이스 생략
+using namespace cv;                                                      // cv(opencv) 네임스페이스 생략
+int main() {                                                             // 메인 함수 선언
+    Mat src = imread("C:/Users/tjdwl/source/repos/"                     // 지정된 경로에서
         "computervision/chap_2-3/lenna.bmp", IMREAD_GRAYSCALE);         // lenna.bmp를 그레이스케일로 읽어 src에 저장
-    float alpha = 1.f;                                                   // 명암비 조절 인수 설정(1.0)
-    Scalar m = mean(src);                                                // 영상 전체 픽셀의 평균값 계산
-    int avg = m[0];                                                      // 그레이스케일 평균값을 avg에 저장(채널 0)
-    cout << avg << "\n\n\n\n\n";                                        // 평균값 출력(확인용, 약 124)
-    Mat dst = src.clone();                                               // src를 복사하여 dst에 저장
-    for (int i = 0; i < src.rows; i++) {                                // 행(세로) 방향으로 반복
-        for (int j = 0; j < src.cols; j++) {                           // 열(가로) 방향으로 반복
-            int srcval = src.at<uchar>(i, j);                          // 현재 픽셀값을 int로 읽기
-            float dstval = srcval + (srcval - avg) * alpha;             // 평균값 기준으로 명암비 조절값 계산
-            dst.at<uchar>(i, j) = saturate_cast<uchar>(dstval);        // 계산값을 0~255 범위로 포화 후 저장
-        }                                                                // 열 반복문 끝
-    }                                                                    // 행 반복문 끝
-    imshow("src", src);                                                  // "src" 창에 원본 이미지 표시
-    imshow("dst", dst);                                                  // "dst" 창에 결과 이미지 표시
-    waitKey(0);                                                          // 키 입력 대기
+    float alpha = 1.f;                                                   // 명암비 조절 강도(alpha) 선언 및 초기화
+    Scalar m = mean(src);                                                // 이미지 전체 픽셀의 평균값을 Scalar로 계산
+    int avg = m[0];                                                      // Scalar의 첫 번째 채널값(평균 밝기)을 int로 저장
+    cout << avg << "\n\n\n\n\n";                                        // 평균 밝기값 출력(약 124)
+    Mat dst = src.clone();                                               // src를 복사하여 결과 이미지 dst 생성
+    for (int i = 0; i < src.rows; i++) {                                // 이미지의 모든 행을 순회
+        for (int j = 0; j < src.cols; j++) {                            // 이미지의 모든 열을 순회
+            int srcval = src.at<uchar>(i, j);                           // (i,j) 위치의 원본 픽셀값을 int로 저장
+            float dstval = srcval + (srcval - avg) * alpha;             // 평균 밝기(avg) 기준으로 alpha 배율만큼 명암비 조절
+            dst.at<uchar>(i, j) = saturate_cast<uchar>(dstval);        // 계산 결과를 0~255 범위로 포화 연산하여 dst에 저장
+        }                                                                // 내부 반복문 종료
+    }                                                                    // 외부 반복문 종료
+    imshow("src", src);                                                  // "src" 윈도우에 원본 이미지 출력
+    imshow("dst", dst);                                                  // "dst" 윈도우에 명암비 조절 이미지 출력
+    waitKey(0);                                                          // 키 입력이 있을 때까지 대기
     return 0;                                                            // 0을 반환(정상종료)
-}                                                                        // 메인함수 끝
+}                                                                        // 메인함수 종료
 ```
 
-![결과](./chap_5-2_4.png)
+![실행결과](./chap_5-2_4.png)
